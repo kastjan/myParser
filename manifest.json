@@ -1,0 +1,19 @@
+{ 
+  "name": "myParser v.1.0", 
+  "version": "1.0", 
+  "manifest_version": 2,
+  "description": "Parser sites", 
+  
+  
+  "permissions": [
+     /*"tabs",*/"downloads", "<all_urls>"
+   ],
+   
+   "browser_action": { // Элементы браузера
+   "default_title": "myParser", // Название кнопки
+   "default_icon": {"19" : "burnicon19.png", "38" : "burnicon38.png"}, // Иконка для кнопки
+   "default_popup": "popup.html" // Всплывающее окно
+  },
+  
+   "icons": { "64": "burnicon64.png" , "128" : "burnicon.png" }
+}
