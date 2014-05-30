@@ -1,13 +1,13 @@
 (function () {
   function searchBigElements(minChildrenNumber, element) {
-    var elements = [].slice.apply(element.querySelectorAll("div,tbody,tr,td"));
+    var elements = [].slice.apply(element.querySelectorAll("div,tbody,tr,td,ul"));
     return bigElements = elements.filter(function(element) {
       if (element.children.length > minChildrenNumber) return element;
     });
   } 
 
   function searchMaxElement(myElement) {
-    var elements = [].slice.apply(myElement.querySelectorAll("div,tbody,tr,td"));
+    var elements = [].slice.apply(myElement.querySelectorAll("div,tbody,tr,td,ul"));
     var currentMax = elements[0];
 
     if (typeof currentMax === "undefined") 
@@ -22,36 +22,25 @@
   } 
 
   function searchEpicElement(bigElements) {
-    var epicElements = [];
     var temp = 0;
     var index = 0;
     for (var i = 0; i < bigElements.length; i++) {
-      epicElements.push(searchMaxElement(bigElements[i]))
+      var area = bigElements[i].offsetWidth * bigElements[i].offsetHeight;
+      if (area > temp) {temp = area; index = i;
+      }
     }
-
-    for (var i = 0; i < epicElements.length; i++) {
-      if (epicElements[i] > temp) {temp = epicElements[i]; index = i;}
-    }
-  console.log(epicElements)
-  console.log(index);
-  return index;
+  return bigElements[index];
   }
 
-  bElements = searchBigElements(15, document);
+  bElements = searchBigElements(10, document);
   console.log(bElements);
-  var index = searchEpicElement(bElements);
+  var epicElement= searchEpicElement(bElements);
 
-  var goods = [].slice.apply(bElements[index].getElementsByTagName("a"));
+  var goods = [].slice.apply(epicElement.getElementsByTagName("img"));
   goods = goods.map(function(element) {
-  var href = element.href;
-    var hashIndex = href.indexOf('#');
-    if (hashIndex >= 0) {
-      href = href.substr(0, hashIndex);
-    }
-    return href;
+  var alt = element.alt;
+    if (typeof alt != "undefined") return alt;
   });
-
-  console.log(goods);
 
   chrome.extension.sendRequest(goods);
 }) ();
