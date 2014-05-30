@@ -1,4 +1,8 @@
 (function () {
+  var reg = new RegExp("price", "i");
+  var regPrice = new RegExp("\\d+(.+)\\d+\\s+(\\S+)", "i");
+
+
   function searchBigElements(minChildrenNumber, element) {
     var elements = [].slice.apply(element.querySelectorAll("div,tbody,tr,td,ul"));
     return bigElements = elements.filter(function(element) {
@@ -29,6 +33,7 @@
       if (area > temp) {temp = area; index = i;
       }
     }
+  console.log(bigElements[index]);
   return bigElements[index];
   }
 
@@ -36,11 +41,36 @@
   console.log(bElements);
   var epicElement= searchEpicElement(bElements);
 
+  var prices = [];
   var goods = [].slice.apply(epicElement.getElementsByTagName("img"));
+
   goods = goods.map(function(element) {
-  var alt = element.alt;
-    if (typeof alt != "undefined") return alt;
+  if (element.offsetHeight > 50) var alt = element.alt;
+  if (typeof alt != "undefined" && alt != "") {
+    while (element.parentNode != epicElement) element = element.parentNode;
+    var str = element.innerHTML;
+    var matches = reg.exec(str);
+    if (matches != null) {
+      str = str.substring(matches.index, matches.index + 200);
+      matches = regPrice.exec(str);
+        if (matches != null)
+          prices.push(matches[0]);
+        else  prices.push("undefined");
+    }
+    return alt + ": ";
+  }
   });
+
+  console.log(prices);
+  var j = 0;
+  for (i = 0; i < goods.length; i++) {
+    if (typeof goods[i] != "undefined") {
+      goods[i] += prices[j];
+      j++;
+    }
+
+  }
+
 
   chrome.extension.sendRequest(goods);
 }) ();
