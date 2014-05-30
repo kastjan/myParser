@@ -1,6 +1,7 @@
 (function () {
   var reg = new RegExp("price", "i");
   var regPrice = new RegExp("\\d+(.+)\\d+\\s+(\\S+)", "i");
+  var allgoods = [];
 
 
   function searchBigElements(minChildrenNumber, element) {
@@ -45,7 +46,7 @@
   var goods = [].slice.apply(epicElement.getElementsByTagName("img"));
 
   goods = goods.map(function(element) {
-  if (element.offsetHeight > 50) var alt = element.alt;
+  if (element.offsetHeight > 40) var alt = element.alt;
   if (typeof alt != "undefined" && alt != "") {
     while (element.parentNode != epicElement) element = element.parentNode;
     var str = element.innerHTML;
@@ -68,9 +69,10 @@
       goods[i] += prices[j];
       j++;
     }
-
   }
-
-
+  for(i = goods.length; i >= 0; i--) {
+    if (typeof goods[i] == "undefined") goods.splice(i, 1);
+  }
+  
   chrome.extension.sendRequest(goods);
 }) ();
