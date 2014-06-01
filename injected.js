@@ -44,7 +44,6 @@
 
   var prices = [];
   var goods = [].slice.apply(epicElement.getElementsByTagName("img"));
-
   goods = goods.map(function(element) {
   if (element.offsetHeight > 40) var alt = element.alt;
   if (typeof alt != "undefined" && alt != "") {
@@ -73,6 +72,6 @@
   for(i = goods.length; i >= 0; i--) {
     if (typeof goods[i] == "undefined") goods.splice(i, 1);
   }
-  
+  goods[goods.length] = window.location.href;
   chrome.extension.sendRequest(goods);
 }) ();

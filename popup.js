@@ -3,9 +3,10 @@ var visiblegoods = [];
 
 // Display all visible goods.
 function showGoods() {
-  var linksTable = document.getElementById('goods');
-  while (linksTable.children.length > 1) {
-    linksTable.removeChild(linksTable.children[linksTable.children.length - 1])
+  document.getElementById('address').innerText = addr;
+  var goodsTable = document.getElementById('goods');
+  while (goodsTable.children.length > 1) {
+    goodsTable.removeChild(goodsTable.children[goodsTable.children.length - 1])
   }
   for (var i = 0; i < visiblegoods.length; ++i) {
     var row = document.createElement('tr');
@@ -23,7 +24,7 @@ function showGoods() {
     }
     row.appendChild(col0);
     row.appendChild(col1);
-    linksTable.appendChild(row);
+    goodsTable.appendChild(row);
   }
 }
 
@@ -37,18 +38,13 @@ function toggleAll() {
 
 // Download all visible checked goods.
 function dovnloadGoods() {
-  /*for (var i = 0; i < visiblegoods.length; ++i) {
-    if (document.getElementById('check' + i).checked) {
-      chrome.downloads.download({file: visiblegoods[i]},
-                                             function(id) {
+      chrome.downloads.download({url: url}, function(id) {
       });
-    }
-  }
-  window.close();*/
+  window.close();
 }
 
 // Re-filter allgoods into visiblegoods and reshow visiblegoods.
-function filterLinks() {
+function filterGoods() {
   var filterValue = document.getElementById('filter').value;
   if (document.getElementById('regex').checked) {
     visiblegoods = allgoods.filter(function(link) {
@@ -79,23 +75,22 @@ function filterLinks() {
   showGoods();
 }
 
-// Add goods to allgoods and visiblegoods, sort and show them.  injected.js is
-// injected into all frames of the active tab, so this listener may be called
-// multiple times.
 chrome.extension.onRequest.addListener(function(goods) {
   for (var index in goods) {
     allgoods.push(goods[index]);
   }
-  //allgoods.sort();
-  visiblegoods = allgoods;
+  for (i=0; i < allgoods.length - 1; i++) {
+    visiblegoods[i] = allgoods[i];
+  }
+  addr = allgoods[allgoods.length-1].toString();
   showGoods();
 });
 
 // Set up event handlers and inject injected.js into all frames in the active
 // tab.
 window.onload = function() {
-  document.getElementById('filter').onkeyup = filterLinks;
-  document.getElementById('regex').onchange = filterLinks;
+  document.getElementById('filter').onkeyup = filterGoods;
+  document.getElementById('regex').onchange = filterGoods;
   document.getElementById('toggle_all').onchange = toggleAll;
   document.getElementById('download0').onclick = dovnloadGoods;
   document.getElementById('download1').onclick = dovnloadGoods;
@@ -108,3 +103,5 @@ window.onload = function() {
     });
   });
 };
+var url = window.location.href;
+console.log(url);
