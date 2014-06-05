@@ -6,7 +6,7 @@
   
   
   "permissions": [
-     /*"tabs",*/"downloads", "<all_urls>"
+     "tabs","downloads", "<all_urls>"
    ],
    
    "browser_action": { // Элементы браузера

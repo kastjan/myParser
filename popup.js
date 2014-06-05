@@ -1,5 +1,6 @@
 var allgoods = [];
 var visiblegoods = [];
+var audioElement = new Audio();
 
 // Display all visible goods.
 function showGoods() {
@@ -79,6 +80,17 @@ chrome.extension.onRequest.addListener(function(goods) {
   for (var index in goods) {
     allgoods.push(goods[index]);
   }
+  if (allgoods.length>1) {
+    audioElement.src = 'sound/COMPLETE.WAV';
+    audioElement.load();
+    audioElement.play();
+  }
+  else {
+    allgoods[0] = ["ERROR!!!"];
+    audioElement.src = 'sound/Error.mp3';
+    audioElement.load();
+    audioElement.play();
+  }
   for (i=0; i < allgoods.length - 1; i++) {
     visiblegoods[i] = allgoods[i];
   }
@@ -105,3 +117,4 @@ window.onload = function() {
 };
 var url = window.location.href;
 console.log(url);
+

@@ -60,7 +60,7 @@
     return alt + ": ";
   }
   });
-
+  
   console.log(prices);
   var j = 0;
   for (i = 0; i < goods.length; i++) {
