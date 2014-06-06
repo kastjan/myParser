@@ -11,21 +11,6 @@
     });
   } 
 
-  function searchMaxElement(myElement) {
-    var elements = [].slice.apply(myElement.querySelectorAll("div,tbody,tr,td,ul"));
-    var currentMax = elements[0];
-
-    if (typeof currentMax === "undefined") 
-      return 0;
-
-    elements.filter(function(element) {
-      if (element.childElementCount > currentMax.childElementCount && element.parentNode == myElement) {
-          currentMax = element;
-        }
-    });
-    return currentMax.childElementCount;
-  } 
-
   function searchEpicElement(bigElements) {
     var temp = 0;
     var index = 0;
