@@ -34,10 +34,8 @@
     return alt;
   }
   });
-  
-  for(i = goods.length; i >= 0; i--) {
-    if (typeof goods[i] == "undefined") goods.splice(i, 1);
-  }
+
+  goods = goods.filter( function(x) { if (typeof x != "undefined") return x;});
   goods[goods.length] = window.location.href;
   chrome.extension.sendRequest(goods);
 }) ();
