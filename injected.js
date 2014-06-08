@@ -3,31 +3,21 @@
   var regPrice = new RegExp("\\d+(.+)\\d+\\s+(\\S+)", "i");
   var allgoods = [];
 
-
-  function searchBigElements(minChildrenNumber, element) {
-    var elements = [].slice.apply(element.querySelectorAll("div,tbody,tr,td,ul"));
-    return bigElements = elements.filter(function(element) {
-      if (element.children.length > minChildrenNumber) return element;
-    });
-  } 
-
-  function searchEpicElement(bigElements) {
-    var temp = 0;
-    var index = 0;
-    for (var i = 0; i < bigElements.length; i++) {
-      var area = bigElements[i].offsetWidth * bigElements[i].offsetHeight;
-      if (area > temp) {temp = area; index = i;
-      }
-    }
-  console.log(bigElements[index]);
-  return bigElements[index];
+  Array.prototype.max = function () {
+    return Math.max.apply(Math, this);
   }
 
-  bElements = searchBigElements(10, document);
-  console.log(bElements);
-  var epicElement= searchEpicElement(bElements);
+  function searchEpicElement(minChildrenNumber, element) {
+    var elements = [].slice.apply(element.querySelectorAll("div,tbody,tr,td,ul"));
+    bigElements = elements.filter(function(element) {
+      if (element.children.length > minChildrenNumber) return element;
+    });
+    var areas = bigElements.map(function (x) {return x.offsetWidth * x.offsetHeight;});
+    return bigElements[areas.indexOf(areas.max())];
+  } 
 
-  var prices = [];
+  var epicElement = searchEpicElement(10, document);
+
   var goods = [].slice.apply(epicElement.getElementsByTagName("img"));
   goods = goods.map(function(element) {
   if (element.offsetHeight > 40) var alt = element.alt;
@@ -38,22 +28,13 @@
     if (matches != null) {
       str = str.substring(matches.index, matches.index + 200);
       matches = regPrice.exec(str);
-        if (matches != null)
-          prices.push(matches[0]);
-        else  prices.push("undefined");
+        if (matches != null) alt += ": " + matches[0];
+        else  alt += ": Is not on sale.";
     }
-    return alt + ": ";
+    return alt;
   }
   });
   
-  console.log(prices);
-  var j = 0;
-  for (i = 0; i < goods.length; i++) {
-    if (typeof goods[i] != "undefined") {
-      goods[i] += prices[j];
-      j++;
-    }
-  }
   for(i = goods.length; i >= 0; i--) {
     if (typeof goods[i] == "undefined") goods.splice(i, 1);
   }
