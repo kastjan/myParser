@@ -15,10 +15,9 @@
     var alt = item.alt;
     while (item.parentNode != epicElement) item = item.parentNode;
     var str = item.innerHTML;
-    if (matches = reg.exec(str)) {
-      matches = regPrice.exec(str.substring(matches.index, matches.index + 200));
-      alt += (matches) ? ": " + matches[0] : ": Is not on sale.";
-      }
+    matches = reg.exec(str);
+    matches = regPrice.exec(str.substring(matches.index, matches.index + 200));
+    alt += (matches) ? ": " + matches[0] : ": Is not on sale.";
     return alt;
   }
 
